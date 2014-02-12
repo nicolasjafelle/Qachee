@@ -38,7 +38,7 @@ public class QacheeManager {
 		this.qachee.put(key, value);
 	}
 
-	public void removeToQachee(Long key) {
+	public void removeFromQachee(Long key) {
 		this.qachee.remove(key);
 	}
 
