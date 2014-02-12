@@ -1,4 +1,4 @@
 Qachee
 ======
 
-Qachee is a generic cachee system to use specially for Android Apps.
+Qachee is a generic cache system to use specially for Android Apps.
