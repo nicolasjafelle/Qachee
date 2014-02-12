@@ -12,7 +12,15 @@ public class QacheeManager {
 	private LruCache<Long, QacheeObject> qachee;
 
 	// Private constructor prevents instantiation from other classes
-	private QacheeManager() { }
+	private QacheeManager() {
+		final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+		// Use 1/8th of the available memory for this memory cache.
+		final int cacheSize = maxMemory / 8;
+
+		qachee = new LruCache<Long, QacheeObject>(cacheSize);
+
+
+	}
 
 	/**
 	 * SingletonHolder is loaded on the first execution of Singleton.getInstance()
