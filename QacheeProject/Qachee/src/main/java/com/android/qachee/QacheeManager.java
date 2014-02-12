@@ -9,7 +9,7 @@ import android.support.v4.util.LruCache;
  */
 public class QacheeManager {
 
-	private LruCache<Long, QacheeObject> cachee;
+	private LruCache<Long, QacheeObject> qachee;
 
 	// Private constructor prevents instantiation from other classes
 	private QacheeManager() { }
@@ -26,24 +26,24 @@ public class QacheeManager {
 		return SingletonHolder.instance;
 	}
 
-	public LruCache<Long, QacheeObject> getCachee() {
-		return cachee;
+	public LruCache<Long, QacheeObject> getQachee() {
+		return qachee;
 	}
 
-	public void setCachee(LruCache<Long, QacheeObject> cachee) {
-		this.cachee = cachee;
+	public void setQachee(LruCache<Long, QacheeObject> qachee) {
+		this.qachee = qachee;
 	}
 
-	public void addToCache(Long key, QacheeObject value) {
-		this.cachee.put(key, value);
+	public void addToQachee(Long key, QacheeObject value) {
+		this.qachee.put(key, value);
 	}
 
-	public void removeToCache(Long key) {
-		this.cachee.remove(key);
+	public void removeToQachee(Long key) {
+		this.qachee.remove(key);
 	}
 
 	public void clearQachee() {
-		this.cachee.evictAll();
+		this.qachee.evictAll();
 	}
 
 }
