@@ -3,7 +3,6 @@ package com.android.qachee;
 
 import android.support.v4.util.LruCache;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
