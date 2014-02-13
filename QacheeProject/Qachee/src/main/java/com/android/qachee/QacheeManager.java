@@ -44,11 +44,11 @@ public class QacheeManager {
 		return qachee.get(key);
 	}
 
-	public <T> T getQacheeable(Long key, Class<T> clazz) {
+	public <T> T get(Long key, Class<T> clazz) {
 		return (T)qachee.get(key);
 	}
 
-	public <T> List<T> getQacheeableList(Class<T> clazz) {
+	public <T> List<T> get(Class<T> clazz) {
 		List<T> list = new ArrayList<T>();
 
 		for(T t: list) {
@@ -63,7 +63,7 @@ public class QacheeManager {
 		this.qachee = qachee;
 	}
 
-	public void setQachee(List<Qacheeable> qachee) {
+	public void addToQachee(List<Qacheeable> qachee) {
 		for(Qacheeable qacheeable : qachee) {
 			this.qachee.put(qacheeable.getKey(), qacheeable);
 		}
@@ -75,6 +75,10 @@ public class QacheeManager {
 
 	public void removeFromQachee(Qacheeable qacheeable) {
 		this.qachee.remove(qacheeable.getKey());
+	}
+
+	public void clearQachee() {
+		this.qachee.evictAll();
 	}
 
 
