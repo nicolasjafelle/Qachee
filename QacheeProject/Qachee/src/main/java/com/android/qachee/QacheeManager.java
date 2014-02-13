@@ -3,6 +3,7 @@ package com.android.qachee;
 
 import android.support.v4.util.LruCache;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -43,6 +44,21 @@ public class QacheeManager {
 		return qachee.get(key);
 	}
 
+	public <T> T getQacheeable(Long key, Class<T> clazz) {
+		return (T)qachee.get(key);
+	}
+
+	public <T> List<T> getQacheeableList(Class<T> clazz) {
+		List<T> list = new ArrayList<T>();
+
+		for(T t: list) {
+			if(clazz.isInstance(t) ) {
+				list.add(t);
+			}
+		}
+		return list;
+	}
+
 	public void setQachee(LruCache<Long, Qacheeable> qachee) {
 		this.qachee = qachee;
 	}
@@ -59,10 +75,6 @@ public class QacheeManager {
 
 	public void removeFromQachee(Qacheeable qacheeable) {
 		this.qachee.remove(qacheeable.getKey());
-	}
-
-	public void clearQachee() {
-		this.qachee.evictAll();
 	}
 
 
