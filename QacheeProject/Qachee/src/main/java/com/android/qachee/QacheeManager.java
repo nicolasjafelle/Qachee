@@ -96,10 +96,18 @@ public class QacheeManager {
 	public <T> void addList(List<T> qachee) {
 		for(T t : qachee) {
 			if(t instanceof Qacheeable) {
-				Qacheeable q = (Qacheeable) t;
 				this.qachee.put(((Qacheeable) t).getKey(), (Qacheeable) t);
 			}
 		}
+	}
+
+	public <T> List<T> addAndReturnList(List<T> qachee) {
+		for(T t : qachee) {
+			if(t instanceof Qacheeable) {
+				this.qachee.put(((Qacheeable) t).getKey(), (Qacheeable) t);
+			}
+		}
+		return qachee;
 	}
 
 	public void removeFromQachee(Qacheeable qacheeable) {
