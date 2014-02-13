@@ -40,7 +40,7 @@ public class QacheeManager {
 		return qachee;
 	}
 
-	public Qacheeable getQacheeable(Long key) {
+	public Qacheeable get(Long key) {
 		return qachee.get(key);
 	}
 
@@ -48,16 +48,16 @@ public class QacheeManager {
 		return (T)qachee.get(key);
 	}
 
-	public <T> List<T> get(Class<T> clazz) {
-		List<T> list = new ArrayList<T>();
-
-		for(T t: list) {
-			if(clazz.isInstance(t) ) {
-				list.add(t);
-			}
-		}
-		return list;
-	}
+//	public <T> List<T> get(Class<T> clazz) {
+//		List<T> list = new ArrayList<T>();
+//
+//		for(T t: list) {
+//			if(clazz.isInstance(t) ) {
+//				list.add(t);
+//			}
+//		}
+//		return list;
+//	}
 
 	public void setQachee(LruCache<Long, Qacheeable> qachee) {
 		this.qachee = qachee;
@@ -71,6 +71,15 @@ public class QacheeManager {
 
 	public void addToQachee(Qacheeable qacheeable) {
 		this.qachee.put(qacheeable.getKey(), qacheeable);
+	}
+
+	public <T> void addListToQachee(List<T> qachee ) {
+		for(T t : qachee) {
+			if(t instanceof Qacheeable) {
+				Qacheeable q = (Qacheeable) t;
+				this.qachee.put(((Qacheeable) t).getKey(), (Qacheeable) t);
+			}
+		}
 	}
 
 	public void removeFromQachee(Qacheeable qacheeable) {

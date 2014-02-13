@@ -1,1 +1,1 @@
-include ':Qachee'
+include ':Qachee', ':QacheeSample'
