@@ -3,6 +3,7 @@ package com.android.qachee;
 
 import android.support.v4.util.LruCache;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -13,6 +14,7 @@ import java.util.List;
 public class QacheeManager {
 
 	private LruCache<Long, Qacheeable> qachee;
+
 
 	// Private constructor prevents instantiation from other classes
 	private QacheeManager() {
@@ -68,17 +70,6 @@ public class QacheeManager {
 		return qacheed;
 	}
 
-//	public <T> List<T> get(Class<T> clazz) {
-//		List<T> list = new ArrayList<T>();
-//
-//		for(T t: list) {
-//			if(clazz.isInstance(t) ) {
-//				list.add(t);
-//			}
-//		}
-//		return list;
-//	}
-
 	private void setQachee(LruCache<Long, Qacheeable> qachee) {
 		this.qachee = qachee;
 	}
@@ -114,9 +105,27 @@ public class QacheeManager {
 		this.qachee.remove(qacheeable.getKey());
 	}
 
+	public List<Qacheeable> toArray() {
+		return (List<Qacheeable>)this.qachee.snapshot().values();
+	}
+
+	public <T> List<T> toArray(Class<T> clazz) {
+		List<T> list = new ArrayList<T>();
+
+		for(Qacheeable qacheeable: this.qachee.snapshot().values()) {
+			if(clazz.isInstance(qacheeable)) {
+				list.add((T)qacheeable);
+			}
+		}
+		return list;
+	}
+
+	public Qacheeable[] toPrimitiveArray() {
+		return (Qacheeable[])this.qachee.snapshot().values().toArray();
+	}
+
 	public void clearQachee() {
 		this.qachee.evictAll();
 	}
-
 
 }

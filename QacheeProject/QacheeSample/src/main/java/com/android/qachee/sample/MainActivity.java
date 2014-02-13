@@ -77,6 +77,13 @@ public class MainActivity extends ActionBarActivity {
 
 	    Log.i("TAG", q.getKey() + "");
 	    Log.i("TAG", userFromCache.getId() + " " + userFromCache.getName());
+
+	    List<User> cachedUsers = QacheeManager.getInstance().toArray(User.class);
+	    Log.i("TAG", "Cached List size for Users:" + cachedUsers.size());
+
+	    List<Car> cachedCars = QacheeManager.getInstance().toArray(Car.class);
+	    Log.i("TAG", "Cached List size for Cars:" + cachedCars.size());
+
     }
 
 
