@@ -58,6 +58,17 @@ public class QacheeManager {
 		return (T)qachee.get(key);
 	}
 
+
+	public <T> T get(Qacheeable qacheeable, Class<T> clazz) {
+		T qacheed = (T) qachee.get(qacheeable.getKey());
+
+		if(qacheed == null) {
+			add(qacheeable);
+			qacheed = get(qacheeable.getKey(), clazz);
+		}
+		return qacheed;
+	}
+
 //	public <T> List<T> get(Class<T> clazz) {
 //		List<T> list = new ArrayList<T>();
 //

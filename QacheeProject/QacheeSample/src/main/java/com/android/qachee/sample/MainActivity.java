@@ -70,6 +70,11 @@ public class MainActivity extends ActionBarActivity {
 	    User userFromCache = QacheeManager.getInstance().get(1l, User.class);
 	    userFromCache.setName("pruebaaaa");
 
+
+	    User userNew = new User(); userNew.setId(7l); userNew.setName("Michael");
+	    User sameUser = QacheeManager.getInstance().get(userNew, User.class);
+	    sameUser.setName("Michael Reborn");
+
 	    Log.i("TAG", q.getKey() + "");
 	    Log.i("TAG", userFromCache.getId() + " " + userFromCache.getName());
     }
