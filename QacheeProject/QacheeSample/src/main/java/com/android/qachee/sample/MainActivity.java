@@ -41,7 +41,7 @@ public class MainActivity extends ActionBarActivity {
 	    users.add(user1); users.add(user2); users.add(user3); users.add(user4);
 
 
-	    QacheeManager.getInstance().addToQachee(users);
+	    QacheeManager.getInstance().add(users);
 
 	    List<Qacheeable> cars = new ArrayList<Qacheeable>();
 	    Car car1 = new Car(); car1.setModel("Toyota");
@@ -50,7 +50,7 @@ public class MainActivity extends ActionBarActivity {
 	    Car car4 = new Car(); car4.setModel("McLaren");
 	    cars.add(car1);cars.add(car2);cars.add(car3);cars.add(car4);
 
-	    QacheeManager.getInstance().addToQachee(cars);
+	    QacheeManager.getInstance().add(cars);
 		QacheeManager.getInstance().clearQachee();
 
 
@@ -58,12 +58,12 @@ public class MainActivity extends ActionBarActivity {
 	    userList.add(user1); userList.add(user2); userList.add(user3); userList.add(user4);
 
 
-	    QacheeManager.getInstance().addListToQachee(userList);
+	    QacheeManager.getInstance().addList(userList);
 
 	    List<Car> carList = new ArrayList<Car>();
 	    carList.add(car1);carList.add(car2);carList.add(car3);carList.add(car4);
 
-	    QacheeManager.getInstance().addListToQachee(carList);
+	    QacheeManager.getInstance().addList(carList);
 
 	    Qacheeable q = QacheeManager.getInstance().get(1l, User.class);
 

@@ -36,8 +36,18 @@ public class QacheeManager {
 		return SingletonHolder.instance;
 	}
 
-	public LruCache<Long, Qacheeable> getQachee() {
+	private LruCache<Long, Qacheeable> getQachee() {
 		return qachee;
+	}
+
+	public Qacheeable get(Qacheeable qacheeable) {
+		Qacheeable qacheed = qachee.get(qacheeable.getKey());
+
+		if(qacheed == null) {
+			add(qacheeable);
+			qacheed = get(qacheeable.getKey());
+		}
+		return qacheed;
 	}
 
 	public Qacheeable get(Long key) {
@@ -59,21 +69,21 @@ public class QacheeManager {
 //		return list;
 //	}
 
-	public void setQachee(LruCache<Long, Qacheeable> qachee) {
+	private void setQachee(LruCache<Long, Qacheeable> qachee) {
 		this.qachee = qachee;
 	}
 
-	public void addToQachee(List<Qacheeable> qachee) {
+	public void add(List<Qacheeable> qachee) {
 		for(Qacheeable qacheeable : qachee) {
 			this.qachee.put(qacheeable.getKey(), qacheeable);
 		}
 	}
 
-	public void addToQachee(Qacheeable qacheeable) {
+	public void add(Qacheeable qacheeable) {
 		this.qachee.put(qacheeable.getKey(), qacheeable);
 	}
 
-	public <T> void addListToQachee(List<T> qachee ) {
+	public <T> void addList(List<T> qachee) {
 		for(T t : qachee) {
 			if(t instanceof Qacheeable) {
 				Qacheeable q = (Qacheeable) t;
