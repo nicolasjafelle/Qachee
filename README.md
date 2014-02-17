@@ -15,14 +15,14 @@ Instructions 2
 ============
 
 1. Add Nicolas Jafelle's Maven repo to your build.gradle: <a href="https://github.com/nicolasjafelle/maven-repo">Instructions</a>
-2. add this dependency: 'com.paginggridview:paging-gridview:1.0'
+2. add this dependency: 'com.android.qachee:qachee:1.0b'
 3. DONE
 
 
 How to Use it
 ================
 
-See DemoSample. <a href="https://github.com/nicolasjafelle/Qachee/tree/master/QacheeProject/QacheeSample">Demo Sample</a>
+See <a href="https://github.com/nicolasjafelle/Qachee/tree/master/QacheeProject/QacheeSample">Demo Sample</a>
 
 
 Developed By
