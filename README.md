@@ -43,6 +43,8 @@ selectedCharacter = (Character) QacheeManager.getInstance().get(selectedCharacte
 
 See <a href="https://github.com/nicolasjafelle/Qachee/tree/master/QacheeProject/QacheeSample">Demo Sample</a>
 
+Google Play demo: <a href="https://play.google.com/store/apps/details?id=com.qachee.sample">link</a>
+
 
 Developed By
 ================
