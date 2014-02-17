@@ -1,8 +1,8 @@
-package com.android.qachee.sample.domain;
+package com.qachee.sample.domain;
 
 import android.util.Log;
 
-import com.android.qachee.Qacheeable;
+import com.qachee.Qacheeable;
 
 /**
  * Created by nicolas on 2/17/14.

@@ -1,9 +1,9 @@
-package com.android.qachee.sample;
+package com.qachee.sample;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 
-import com.android.qachee.sample.fragment.CharacterListFragment;
+import com.qachee.sample.fragment.CharacterListFragment;
 
 public class MainActivity extends ActionBarActivity {
 

@@ -1,4 +1,4 @@
-package com.android.qachee.sample.fragment;
+package com.qachee.sample.fragment;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -13,12 +13,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.android.qachee.QacheeManager;
-import com.android.qachee.sample.DemoLoader;
-import com.android.qachee.sample.R;
-import com.android.qachee.sample.adapter.CharacterAdapter;
-import com.android.qachee.sample.domain.Character;
-import com.android.qachee.sample.task.SafeAsyncTask;
+import com.qachee.QacheeManager;
+import com.qachee.sample.DemoLoader;
+import com.qachee.sample.R;
+import com.qachee.sample.adapter.CharacterAdapter;
+import com.qachee.sample.domain.Character;
+import com.qachee.sample.task.SafeAsyncTask;
 
 import java.util.List;
 
@@ -52,7 +52,7 @@ public class CharacterListFragment extends Fragment implements AdapterView.OnIte
 	}
 
 	private void loadList() {
-		List<com.android.qachee.sample.domain.Character> list = QacheeManager.getInstance().toArray(Character.class);
+		List<com.qachee.sample.domain.Character> list = QacheeManager.getInstance().toArray(Character.class);
 
 		if(list == null || list.isEmpty()) {
 			new DemoTask(getActivity()).execute();

@@ -1,4 +1,4 @@
-package com.android.qachee;
+package com.qachee;
 
 /**
  * Qacheeable

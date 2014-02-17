@@ -1,4 +1,4 @@
-package com.android.qachee.sample.view;
+package com.qachee.sample.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -6,7 +6,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.android.qachee.sample.R;
+import com.qachee.sample.R;
 
 
 /**
@@ -39,7 +39,7 @@ public class CharacterItemView extends LinearLayout {
 		title = (TextView) findViewById(R.id.character_item_view_title);
 	}
 
-	public void loadData(com.android.qachee.sample.domain.Character character) {
+	public void loadData(com.qachee.sample.domain.Character character) {
 		image.setImageResource(character.getImageResId());
 		title.setText(character.getName());
 	}

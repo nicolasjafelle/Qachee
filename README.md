@@ -15,7 +15,7 @@ Instructions 2
 ============
 
 1. Add Nicolas Jafelle's Maven repo to your build.gradle: <a href="https://github.com/nicolasjafelle/maven-repo">Instructions</a>
-2. add this dependency: 'com.android.qachee:qachee:1.0b'
+2. add this dependency: 'com.qachee:qachee:1.0b'
 3. DONE
 
 

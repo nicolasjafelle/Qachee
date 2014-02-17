@@ -1,4 +1,4 @@
-package com.android.qachee;
+package com.qachee;
 
 
 import android.support.v4.util.LruCache;

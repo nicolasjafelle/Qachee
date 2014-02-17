@@ -1,4 +1,4 @@
-package com.android.qachee.sample.task;
+package com.qachee.sample.task;
 
 import android.os.Handler;
 import android.os.Looper;

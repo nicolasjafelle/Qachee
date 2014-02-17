@@ -1,12 +1,12 @@
-package com.android.qachee.sample.adapter;
+package com.qachee.sample.adapter;
 
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.android.qachee.QacheeManager;
-import com.android.qachee.sample.domain.Character;
-import com.android.qachee.sample.view.CharacterItemView;
+import com.qachee.QacheeManager;
+import com.qachee.sample.domain.Character;
+import com.qachee.sample.view.CharacterItemView;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class CharacterAdapter extends BaseAdapter {
 
-	private List<com.android.qachee.sample.domain.Character> list;
+	private List<com.qachee.sample.domain.Character> list;
 
 	public CharacterAdapter(List<Character> list) {
 		super();

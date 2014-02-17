@@ -1,4 +1,4 @@
-package com.android.qachee.sample.fragment;
+package com.qachee.sample.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,9 +9,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.android.qachee.QacheeManager;
-import com.android.qachee.sample.R;
-import com.android.qachee.sample.domain.Character;
+import com.qachee.QacheeManager;
+import com.qachee.sample.R;
+import com.qachee.sample.domain.*;
+import com.qachee.sample.domain.Character;
 
 /**
  * Created by nicolas on 2/17/14.
@@ -67,7 +68,7 @@ public class CharacterEditFragment extends Fragment{
 		if(getArguments() != null && getArguments().getLong(CURRENT_SELECTED_CHARACTER) != 0) {
 			currentSelectedCharacter = getArguments().getLong(CURRENT_SELECTED_CHARACTER);
 
-			Character character = QacheeManager.getInstance().get(currentSelectedCharacter, Character.class);
+			com.qachee.sample.domain.Character character = QacheeManager.getInstance().get(currentSelectedCharacter, Character.class);
 			if(character != null) {
 				editName.setText(character.getName());
 				editDescription.setText(character.getDescription());

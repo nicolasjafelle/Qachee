@@ -21,7 +21,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:+'
 }
 
-group 'com.android.qachee'
+group 'com.qachee'
 archivesBaseName = 'qachee'
 version '1.0b'
 
