@@ -22,6 +22,25 @@ Instructions 2
 How to Use it
 ================
 
+First you need to implements the Qacheeable interface, you should have to implements getKey, you can return the ID attribute or anything that make your instance unique, like hashcode()<br>
+``` java
+@Override
+public Long getKey() {
+	return (long)hashCode();
+}
+```
+
+Then just simple use QacheeManager to add, remove and get your Qacheeable objects.<br>
+``` java
+Character character = QacheeManager.getInstance().get(getItem(position), Character.class);
+```
+
+When your object is stored in the Qachee you do not need to re-add or update it, simple use it. REMEMBER always to check if the object is stored in Qachee, REMEMBER always work with Qachee, like this:<br>
+``` java
+Character selectedCharacter = (Character) listView.getItemAtPosition(pos);
+selectedCharacter = (Character) QacheeManager.getInstance().get(selectedCharacter);
+```
+
 See <a href="https://github.com/nicolasjafelle/Qachee/tree/master/QacheeProject/QacheeSample">Demo Sample</a>
 
 
