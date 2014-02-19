@@ -121,9 +121,11 @@ public class QacheeManager {
 	/**
 	 * Adds a Qacheeable Object into cache.
 	 * @param qacheeable
+	 * @return The Qacheeable's key
 	 */
-	public void add(Qacheeable qacheeable) {
+	public long add(Qacheeable qacheeable) {
 		this.qachee.put(qacheeable.getKey(), qacheeable);
+		return qacheeable.getKey();
 	}
 
 	/**
@@ -156,8 +158,22 @@ public class QacheeManager {
 	 * Removes the Qacheeable Object previously stored in the cache.
 	 * @param qacheeable The Qacheeable Object.
 	 */
-	public void removeFromQachee(Qacheeable qacheeable) {
+	public void remove(Qacheeable qacheeable) {
 		this.qachee.remove(qacheeable.getKey());
+	}
+
+	/**
+	 * Removes all the Qacheeable Objects which are instancies of clazz.
+	 * @param clazz The class which instances should be removed.
+	 */
+	public <T> void removeAll(Class<T> clazz) {
+		List<T> list = toArray(clazz);
+
+		for(T t: list) {
+			if(t instanceof Qacheeable) {
+				this.qachee.remove(((Qacheeable)t).getKey());
+			}
+		}
 	}
 
 	/**
