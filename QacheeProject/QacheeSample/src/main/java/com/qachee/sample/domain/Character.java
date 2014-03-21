@@ -2,18 +2,20 @@ package com.qachee.sample.domain;
 
 import android.util.Log;
 
-import com.qachee.Qacheeable;
+import com.qachee.QacheeableObject;
 
 /**
  * Created by nicolas on 2/17/14.
  */
-public class Character implements Qacheeable {
+public class Character extends QacheeableObject {
 
 	private String name;
 	private String description;
 	private int imageResId;
 
-	public Character(){}
+	public Character(){
+		super();
+	}
 
 	public Character(String name, String description, int imageResId) {
 		this.name = name;
@@ -50,4 +52,5 @@ public class Character implements Qacheeable {
 		Log.i("HASHCHODE", "KEY VALUE FOR " + getName() + "= " + hashCode());
 		return (long)hashCode();
 	}
+
 }

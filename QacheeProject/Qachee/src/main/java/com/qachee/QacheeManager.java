@@ -4,6 +4,8 @@ package com.qachee;
 import android.support.v4.util.LruCache;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -13,6 +15,7 @@ import java.util.List;
 public class QacheeManager {
 
 	private LruCache<Long, Qacheeable> qachee;
+	private ExpirationTime expirationTime;
 
 
 	// Private constructor prevents instantiation from other classes
@@ -22,6 +25,7 @@ public class QacheeManager {
 		final int cacheSize = maxMemory / 8;
 
 		qachee = new LruCache<Long, Qacheeable>(cacheSize);
+		expirationTime = ExpirationTime.ONE_MINUTE;
 	}
 
 	/**
@@ -33,11 +37,20 @@ public class QacheeManager {
 	}
 
 	/**
-	 * Singleton pattern. Returns the same instance everytime. This singleton is thread safe.
+	 * Singleton pattern. Returns the same instance everytime. This singleton is thread safe.<br>
+	 * By default the ExpirationTime is ONE_MINUTE.
 	 * @return
 	 */
 	public static QacheeManager getInstance() {
 		return SingletonHolder.instance;
+	}
+
+	/**
+	 * Sets the ExpirationTime policy. By default is ONE_MINUTE.
+	 * @param expirationTime
+	 */
+	public void setExpirationTime(ExpirationTime expirationTime) {
+		this.expirationTime = expirationTime;
 	}
 
 	/**
@@ -55,9 +68,10 @@ public class QacheeManager {
 	 * @return The Qacheeable object stored in the cache.
 	 */
 	public Qacheeable get(Qacheeable qacheeable) {
-		Qacheeable qacheed = qachee.get(qacheeable.getKey());
 
-		if(qacheed == null) {
+		Qacheeable qacheed = get(qacheeable.getKey());
+
+		if(qacheed == null && qacheeable.lastUpdate() > expirationTime.getValue() ) {
 			add(qacheeable);
 			qacheed = get(qacheeable.getKey());
 		}
@@ -162,18 +176,58 @@ public class QacheeManager {
 		this.qachee.remove(qacheeable.getKey());
 	}
 
+
+
+	/**
+	 * Returns a COPY of all the stored objects which are instances of the given class. It also check or not
+	 * for the last updated time.
+	 * @param clazz The Object's Class instance that you are looking for.
+	 * @param checkLastUpdate true if check for last updated time, false otherwise.
+	 * @return The List of stored objects or null if one of its items has expired.
+	 */
+	private <T> List<T> toArray(Class<T> clazz, boolean checkLastUpdate) {
+		Qacheeable qacheeable;
+		Collection<Qacheeable> list = this.qachee.snapshot().values();
+		List<T> resultList = new ArrayList<T>();
+		Iterator<Qacheeable> it = list.iterator();
+
+		while(it.hasNext() && resultList != null) {
+			qacheeable = it.next();
+
+			if(checkLastUpdate && (qacheeable.lastUpdate() > expirationTime.getValue()) ) {
+				resultList = null;
+
+			}else if(clazz.isInstance(qacheeable)) {
+				resultList.add((T)qacheeable);
+			}
+		}
+		return resultList;
+	}
+
 	/**
 	 * Removes all the Qacheeable Objects which are instancies of clazz.
 	 * @param clazz The class which instances should be removed.
 	 */
 	public <T> void removeAll(Class<T> clazz) {
-		List<T> list = toArray(clazz);
+		List<T> list = toArray(clazz, false);
 
-		for(T t: list) {
-			if(t instanceof Qacheeable) {
-				this.qachee.remove(((Qacheeable)t).getKey());
+		if(list != null) {
+			for(T t: list) {
+				if(t instanceof Qacheeable) {
+					this.qachee.remove(((Qacheeable)t).getKey());
+				}
 			}
 		}
+	}
+
+
+	/**
+	 * Returns a COPY of all the stored objects which are instances of the given class.
+	 * @param clazz The Object's Class instance that you are looking for.
+	 * @return The List of stored objects or null if one of its items has expired.
+	 */
+	public <T> List<T> toArray(Class<T> clazz) {
+		return toArray(clazz, true);
 	}
 
 	/**
@@ -181,23 +235,7 @@ public class QacheeManager {
 	 * @return The List of Qacheeable objects.
 	 */
 	public List<Qacheeable> toArray() {
-		return (List<Qacheeable>)this.qachee.snapshot().values();
-	}
-
-	/**
-	 * Returns a COPY of all the stored objects which are instances of the given class.
-	 * @param clazz The Object's Class instance that you are looking for.
-	 * @return The List of stored objects.
-	 */
-	public <T> List<T> toArray(Class<T> clazz) {
-		List<T> list = new ArrayList<T>();
-
-		for(Qacheeable qacheeable: this.qachee.snapshot().values()) {
-			if(clazz.isInstance(qacheeable)) {
-				list.add((T)qacheeable);
-			}
-		}
-		return list;
+		return toArray(Qacheeable.class, true);
 	}
 
 	/**
@@ -205,7 +243,7 @@ public class QacheeManager {
 	 * @return The array of stored objects.
 	 */
 	public Qacheeable[] toPrimitiveArray() {
-		return (Qacheeable[])this.qachee.snapshot().values().toArray();
+		return (Qacheeable[])toArray(Qacheeable.class, true).toArray();
 	}
 
 	/**
@@ -214,5 +252,7 @@ public class QacheeManager {
 	public void clearQachee() {
 		this.qachee.evictAll();
 	}
+
+
 
 }

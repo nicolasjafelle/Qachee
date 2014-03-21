@@ -12,4 +12,17 @@ public interface Qacheeable {
 	 * @return the key
 	 */
 	Long getKey();
+
+
+	/**
+	 * Returns the last updated time in milliseconds.
+	 * @return The last updated time in milliseconds.
+	 */
+	long lastUpdate();
+
+	/**
+	 * Updates the last updated time value.
+	 */
+	void update();
+
 }

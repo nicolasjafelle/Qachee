@@ -2,7 +2,7 @@ apply plugin: 'android'
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "19.0.1"
+    buildToolsVersion "19.0.3"
 
     defaultConfig {
         minSdkVersion 8
@@ -24,6 +24,12 @@ android {
             signingConfig signingConfigs.release
 //            runProguard false
 //            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+
+        debug {
+            debuggable = true
+            packageNameSuffix = ".debug"
+            signingConfig signingConfigs.debug
         }
     }
 }

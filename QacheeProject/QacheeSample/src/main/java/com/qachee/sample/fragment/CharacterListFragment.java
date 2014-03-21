@@ -52,7 +52,7 @@ public class CharacterListFragment extends Fragment implements AdapterView.OnIte
 	}
 
 	private void loadList() {
-		List<com.qachee.sample.domain.Character> list = QacheeManager.getInstance().toArray(Character.class);
+		List<Character> list = QacheeManager.getInstance().toArray(Character.class);
 
 		if(list == null || list.isEmpty()) {
 			new DemoTask(getActivity()).execute();
@@ -106,7 +106,8 @@ public class CharacterListFragment extends Fragment implements AdapterView.OnIte
 
 		@Override
 		public List<Character> call() throws Exception {
-			Thread.sleep(3000);
+			Thread.sleep(3000); // emulates Long call to a Web API.
+			QacheeManager.getInstance().removeAll(Character.class);
 			return DemoLoader.createData();
 		}
 

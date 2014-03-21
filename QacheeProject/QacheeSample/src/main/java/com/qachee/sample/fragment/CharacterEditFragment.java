@@ -11,7 +11,6 @@ import android.widget.Toast;
 
 import com.qachee.QacheeManager;
 import com.qachee.sample.R;
-import com.qachee.sample.domain.*;
 import com.qachee.sample.domain.Character;
 
 /**
