@@ -3,7 +3,7 @@ apply plugin: 'maven'
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "19.0.1"
+    buildToolsVersion "19.0.3"
 
     defaultConfig {
         minSdkVersion 7
@@ -19,7 +19,7 @@ dependencies {
 
 group 'com.qachee'
 archivesBaseName = 'qachee'
-version '1.0b'
+version '1.0'
 
 
 

@@ -92,9 +92,4 @@ public class CharacterEditFragment extends Fragment{
 		getActivity().getSupportFragmentManager().popBackStack();
 	}
 
-
-
-
-
-
 }
