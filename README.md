@@ -1,6 +1,5 @@
-Qachee
+![Qachee-logo](https://raw2.github.com/nicolasjafelle/Qachee/master/QacheeProject/QacheeSample/src/main/res/drawable-mdpi/ic_launcher.png)Qachee
 ======
-
 Qachee is a generic cache system to use specially for Android Apps. For now it is just a memory ram cache without policy expiration but... we are working to add this and disk cache with DiskLruCache.<br>
 
 Instructions 1
@@ -22,17 +21,39 @@ Instructions 2
 How to Use it
 ================
 
-First you need to implements the Qacheeable interface, you should have to implements getKey, you can return the ID attribute or anything that make your instance unique, like hashcode()<br>
+First you need to extends the QacheeableObject which implements the Qacheeable interface, then you have to implements getKey, you can return the ID attribute or anything that make your instance unique, like hashcode()<br>
 ``` java
 @Override
 public Long getKey() {
 	return (long)hashCode();
 }
 ```
+You can set the Expiration Time Policy, default is: 
+``` java 
+ExpirationTime.ONE_MINUTE 
+```
+
+Simple in your Application or any place use:
+``` java
+QacheeManager.getInstance().setExpirationTime(ExpirationTime.THIRTY_SECONDS);
+```
 
 Then just simple use QacheeManager to add, remove and get your Qacheeable objects.<br>
 ``` java
 Character character = QacheeManager.getInstance().get(getItem(position), Character.class);
+```
+OR...
+``` java
+// If toArray() returns empty means: there is nothing previously stored.
+// If toArray() returns null the stored data is no longer valid.
+List<Character> list = QacheeManager.getInstance().toArray(Character.class);
+
+if(list == null || list.isEmpty()) {
+	new DemoTask(getActivity()).execute();
+}else {
+	adapter = new CharacterAdapter(list);
+	listView.setAdapter(adapter);
+}
 ```
 
 When your object is stored in the Qachee you do not need to re-add or update it, simple use it. REMEMBER always to check if the object is stored in Qachee, REMEMBER always work with Qachee, like this:<br>
@@ -68,4 +89,3 @@ License
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
-
