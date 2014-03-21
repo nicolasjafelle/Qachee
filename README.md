@@ -1,6 +1,6 @@
 ![Qachee-logo](https://raw2.github.com/nicolasjafelle/Qachee/master/QacheeProject/QacheeSample/src/main/res/drawable-mdpi/ic_launcher.png)Qachee
 ======
-Qachee is a generic cache system to use specially for Android Apps. For now it is just a memory ram cache without policy expiration but... we are working to add this and disk cache with DiskLruCache.<br>
+Qachee is a generic cache system to use specially for Android Apps. It is just a memory ram cache wit policy expiration.<br>
 
 Instructions 1
 ============
