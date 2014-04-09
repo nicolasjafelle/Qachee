@@ -17,9 +17,9 @@ dependencies {
     compile 'com.android.support:appcompat-v7:+'
 }
 
-group 'com.qachee'
-archivesBaseName = 'qachee'
-version '1.0'
+//group 'com.qachee'
+//archivesBaseName = 'qachee'
+//version '1.0'
 
 
 
@@ -33,14 +33,14 @@ android {
     }
 }
 
-ext.home = "file://" + System.getProperty("user.home") + "/.m2/repository"
+//ext.home = "file://" + System.getProperty("user.home") + "/.m2/repository"
+//
+//uploadArchives {
+//    repositories {
+//        mavenDeployer {
+//            repository(url: home)
+//        }
+//    }
+//}
 
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            repository(url: home)
-        }
-    }
-}
-
-
+apply from: 'https://raw.github.com/chrisbanes/gradle-mvn-push/master/gradle-mvn-push.gradle'
