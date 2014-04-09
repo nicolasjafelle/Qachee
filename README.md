@@ -6,7 +6,7 @@ Instructions - Maven Central
 ============
 
 1. Add this library in your build.gradle:
-``` java 
+``` 
 dependencies {
     compile 'com.github.nicolasjafelle:qachee:1.0'
 }
