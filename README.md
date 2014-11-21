@@ -1,4 +1,4 @@
-![Qachee-logo](https://raw2.github.com/nicolasjafelle/Qachee/master/QacheeProject/QacheeSample/src/main/res/drawable-mdpi/ic_launcher.png)Qachee
+![Qachee-logo](https://raw.githubusercontent.com/nicolasjafelle/Qachee/master/QacheeProject/QacheeSample/src/main/res/drawable-hdpi/ic_launcher.png)Qachee
 ======
 Qachee is a generic cache system to use specially for Android Apps. It is just a LRU Memory cache with policy expiration and lots of useful methods.<br>
 
