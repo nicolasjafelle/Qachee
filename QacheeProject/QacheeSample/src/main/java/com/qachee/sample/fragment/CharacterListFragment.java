@@ -67,12 +67,12 @@ public class CharacterListFragment extends Fragment implements AdapterView.OnIte
 
 		Character selectedCharacter = (Character) listView.getItemAtPosition(pos);
 
-		selectedCharacter = (Character) QacheeManager.getInstance().get(selectedCharacter);
+		selectedCharacter = (Character) QacheeManager.getInstance().get(selectedCharacter, false);
 		replace(getActivity(), CharacterEditFragment.newInstance(selectedCharacter.getKey()));
 
 
 		// OR...
-//		long selectedItemKey = ((Character) QacheeManager.getInstance().get(selectedCharacter)).getKey();
+//		long selectedItemKey = ((Character) QacheeManager.getInstance().get(selectedCharacter, false)).getKey();
 //		replace(getActivity(), CharacterEditFragment.newInstance(selectedItemKey);
 	}
 

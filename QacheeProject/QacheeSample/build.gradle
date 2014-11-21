@@ -1,12 +1,12 @@
 apply plugin: 'android'
 
 android {
-    compileSdkVersion 19
-    buildToolsVersion "19.0.3"
+    compileSdkVersion 21
+    buildToolsVersion "21.1.1"
 
     defaultConfig {
         minSdkVersion 8
-        targetSdkVersion 19
+        targetSdkVersion 21
         versionCode 1
         versionName "1.0"
     }
@@ -19,16 +19,16 @@ android {
 
     buildTypes {
         release {
-            zipAlign true
-            debuggable = false
+            zipAlignEnabled true
+            debuggable false
             signingConfig signingConfigs.release
 //            runProguard false
 //            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
 
         debug {
-            debuggable = true
-            packageNameSuffix = ".debug"
+            debuggable true
+            applicationIdSuffix ".debug"
             signingConfig signingConfigs.debug
         }
     }
@@ -45,6 +45,6 @@ if (project.hasProperty('storeFile') &&
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:+'
+    compile 'com.android.support:appcompat-v7:21.0.+'
     compile project(":Qachee")
 }

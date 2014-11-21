@@ -65,16 +65,25 @@ public class QacheeManager {
 	 * Returns the Qacheeable object stored in the cache. If the Qacheeable Object is not in the cache,
 	 * it will be saved before return it.
 	 * @param qacheeable The Qacheeable object that you get from somewhere.
+     * @param checkLastUpdate true if check for last updated time, false otherwise.
 	 * @return The Qacheeable object stored in the cache.
 	 */
-	public Qacheeable get(Qacheeable qacheeable) {
+	public Qacheeable get(Qacheeable qacheeable, boolean checkLastUpdate) {
 
-		Qacheeable qacheed = get(qacheeable.getKey());
+        Qacheeable qacheed = qachee.get(qacheeable.getKey());
 
-		if(qacheed == null && qacheeable.lastUpdate() > expirationTime.getValue() ) {
-			add(qacheeable);
-			qacheed = get(qacheeable.getKey());
-		}
+		if(qacheed != null) {
+
+            if (checkLastUpdate && qacheed.lastUpdate() > expirationTime.getValue()) {
+                qacheed = null;
+            } else {
+                add(qacheeable);
+                qacheed = get(qacheeable.getKey());
+            }
+        }else {
+            add(qacheeable);
+            qacheed = get(qacheeable.getKey());
+        }
 		return qacheed;
 	}
 

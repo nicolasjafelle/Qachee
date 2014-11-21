@@ -67,7 +67,7 @@ public class CharacterEditFragment extends Fragment{
 		if(getArguments() != null && getArguments().getLong(CURRENT_SELECTED_CHARACTER) != 0) {
 			currentSelectedCharacter = getArguments().getLong(CURRENT_SELECTED_CHARACTER);
 
-			com.qachee.sample.domain.Character character = QacheeManager.getInstance().get(currentSelectedCharacter, Character.class);
+			Character character = QacheeManager.getInstance().get(currentSelectedCharacter, Character.class);
 			if(character != null) {
 				editName.setText(character.getName());
 				editDescription.setText(character.getDescription());
