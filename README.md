@@ -8,7 +8,7 @@ Instructions - Maven Central
 1. Add this library in your build.gradle:
 ``` 
 dependencies {
-    compile 'com.github.nicolasjafelle:qachee:1.0'
+    compile 'com.github.nicolasjafelle:qachee:1.1'
 }
 ```
 
@@ -36,6 +36,7 @@ First you need to extends the QacheeableObject which implements the Qacheeable i
 @Override
 public Long getKey() {
 	return (long)hashCode();
+	// return (long) fooString.hashCode();
 }
 ```
 You can set the Expiration Time Policy, default is: 
@@ -50,13 +51,13 @@ QacheeManager.getInstance().setExpirationTime(ExpirationTime.THIRTY_SECONDS);
 
 Then just simple use QacheeManager to add, remove and get your Qacheeable objects.<br>
 ``` java
-Character character = QacheeManager.getInstance().get(getItem(position), Character.class);
+Character character = QacheeManager.getInstance().get(getItem(position), Character.class, true);
 ```
 OR...
 ``` java
 // If toArray() returns empty means: there is nothing previously stored.
 // If toArray() returns null the stored data is no longer valid.
-List<Character> list = QacheeManager.getInstance().toArray(Character.class);
+List<Character> list = QacheeManager.getInstance().toArray(Character.class, true);
 
 if(list == null || list.isEmpty()) {
 	new DemoTask(getActivity()).execute();
@@ -69,7 +70,7 @@ if(list == null || list.isEmpty()) {
 When your object is stored in the Qachee you do not need to re-add or update it, simple use it. REMEMBER always to check if the object is stored in Qachee, REMEMBER always work with Qachee, like this:<br>
 ``` java
 Character selectedCharacter = (Character) listView.getItemAtPosition(pos);
-selectedCharacter = (Character) QacheeManager.getInstance().get(selectedCharacter);
+selectedCharacter = (Character) QacheeManager.getInstance().get(selectedCharacter, true);
 ```
 
 See <a href="https://github.com/nicolasjafelle/Qachee/tree/master/QacheeProject/QacheeSample">Demo Sample</a>
