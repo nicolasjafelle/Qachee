@@ -41,7 +41,7 @@ public class CharacterAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 
 		CharacterItemView itemView;
-		Character character = QacheeManager.getInstance().get(getItem(position), Character.class);
+		Character character = QacheeManager.getInstance().get(getItem(position), Character.class, false);
 
 		if(convertView != null) {
 			itemView = (CharacterItemView)convertView;

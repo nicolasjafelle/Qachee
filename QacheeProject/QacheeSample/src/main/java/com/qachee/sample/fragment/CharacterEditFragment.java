@@ -67,7 +67,7 @@ public class CharacterEditFragment extends Fragment{
 		if(getArguments() != null && getArguments().getLong(CURRENT_SELECTED_CHARACTER) != 0) {
 			currentSelectedCharacter = getArguments().getLong(CURRENT_SELECTED_CHARACTER);
 
-			Character character = QacheeManager.getInstance().get(currentSelectedCharacter, Character.class);
+			Character character = QacheeManager.getInstance().get(currentSelectedCharacter, Character.class, false);
 			if(character != null) {
 				editName.setText(character.getName());
 				editDescription.setText(character.getDescription());
@@ -77,7 +77,7 @@ public class CharacterEditFragment extends Fragment{
 
 	private void saveData() {
 		if(currentSelectedCharacter != 0) {
-			Character character = QacheeManager.getInstance().get(currentSelectedCharacter, Character.class);
+			Character character = QacheeManager.getInstance().get(currentSelectedCharacter, Character.class, false);
 
 			if(character != null) {
 				character.setName(editName.getText().toString());

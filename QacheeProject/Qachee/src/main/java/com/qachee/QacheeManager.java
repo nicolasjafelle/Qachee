@@ -73,28 +73,38 @@ public class QacheeManager {
         Qacheeable qacheed = qachee.get(qacheeable.getKey());
 
 		if(qacheed != null) {
-
             if (checkLastUpdate && qacheed.lastUpdate() > expirationTime.getValue()) {
                 qacheed = null;
             } else {
                 add(qacheeable);
-                qacheed = get(qacheeable.getKey());
             }
         }else {
             add(qacheeable);
-            qacheed = get(qacheeable.getKey());
         }
 		return qacheed;
 	}
 
-	/**
-	 * Returns the Qacheeable object which has the same key value.
-	 * @param key The key value
-	 * @return The Qacheeable object stored in the cache
-	 */
-	public Qacheeable get(Long key) {
-		return qachee.get(key);
-	}
+
+
+    /**
+     * Returns the Qacheeable object which has the same key value.
+     * @param key The key value
+     * @return The Qacheeable object stored in the cache
+     */
+    public Qacheeable get(Long key, boolean checkLastUpdate) {
+
+        Qacheeable qacheed = qachee.get(key);
+
+        if(qacheed != null) {
+            if (checkLastUpdate && ((QacheeableObject)qacheed).lastUpdate() > expirationTime.getValue()) {
+                qacheed = null;
+            } else {
+                add((QacheeableObject)qacheed);
+            }
+        }
+
+        return qacheed;
+    }
 
 	/**
 	 * Returns the Object which has the same key value and is stored in the cache.
@@ -102,8 +112,18 @@ public class QacheeManager {
 	 * @param clazz The Object's class that you are looking for.
 	 * @return The Object that which is stored in the cache.
 	 */
-	public <T> T get(Long key, Class<T> clazz) {
-		return (T)qachee.get(key);
+	public <T> T get(Long key, Class<T> clazz, boolean checkLastUpdate) {
+        T qacheed = (T)qachee.get(key);
+
+        if(qacheed != null) {
+            if (checkLastUpdate && ((QacheeableObject)qacheed).lastUpdate() > expirationTime.getValue()) {
+                qacheed = null;
+            } else {
+                add((QacheeableObject)qacheed);
+            }
+        }
+
+		return qacheed;
 	}
 
 
@@ -113,12 +133,12 @@ public class QacheeManager {
 	 * @param clazz The Object's class that you are looking for.
 	 * @return The Qacheeable Object that which is stored in the cache.
 	 */
-	public <T> T get(Qacheeable qacheeable, Class<T> clazz) {
+	public <T> T get(Qacheeable qacheeable, Class<T> clazz, boolean checkLastUpdate) {
 		T qacheed = (T) qachee.get(qacheeable.getKey());
 
 		if(qacheed == null) {
 			add(qacheeable);
-			qacheed = get(qacheeable.getKey(), clazz);
+			qacheed = get(qacheeable.getKey(), clazz, checkLastUpdate);
 		}
 		return qacheed;
 	}
