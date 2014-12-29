@@ -1,5 +1,8 @@
 ![Qachee-logo](https://raw.githubusercontent.com/nicolasjafelle/Qachee/master/QacheeProject/QacheeSample/src/main/res/drawable-hdpi/ic_launcher.png)Qachee
 ======
+
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Qachee-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/1276)
+
 Qachee is a generic cache system to use specially for Android Apps. It is just a LRU Memory cache with policy expiration and lots of useful methods.<br>
 
 Instructions - Maven Central
