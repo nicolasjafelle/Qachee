@@ -1,30 +1,35 @@
 package com.qachee;
 
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.util.LruCache;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 
 /**
- * QacheeManager. This singleton class is the responsable to save, restore, remove and return your cached objects.
+ * QacheeManager. This singleton class is the responsible to save, restore, remove and return your cached objects.
  */
 public class QacheeManager {
 
-	private LruCache<Long, Qacheeable> qachee;
-	private ExpirationTime expirationTime;
+	private Map<Class, LruCache<Long, Qacheeable>> qachee;
+	private long expirationTime;
+	private int mCacheSize;
 
 
 	// Private constructor prevents instantiation from other classes
 	private QacheeManager() {
 		final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
 		// Use 1/8th of the available memory for this memory cache.
-		final int cacheSize = maxMemory / 8;
+		mCacheSize = maxMemory / 8;
 
-		qachee = new LruCache<Long, Qacheeable>(cacheSize);
+		qachee = new HashMap<>();
 		expirationTime = ExpirationTime.ONE_MINUTE;
 	}
 
@@ -39,6 +44,7 @@ public class QacheeManager {
 	/**
 	 * Singleton pattern. Returns the same instance everytime. This singleton is thread safe.<br>
 	 * By default the ExpirationTime is ONE_MINUTE.
+	 *
 	 * @return
 	 */
 	public static QacheeManager getInstance() {
@@ -47,151 +53,197 @@ public class QacheeManager {
 
 	/**
 	 * Sets the ExpirationTime policy. By default is ONE_MINUTE.
+	 *
 	 * @param expirationTime
 	 */
-	public void setExpirationTime(ExpirationTime expirationTime) {
+	public void setExpirationTime(@ExpirationTime.ExpirationPolicy long expirationTime) {
 		this.expirationTime = expirationTime;
 	}
 
 	/**
 	 * Returns the LruCache object.
+	 *
 	 * @return the LruCache object.
 	 */
-	private LruCache<Long, Qacheeable> getQachee() {
-		return qachee;
+	@Nullable
+	private LruCache<Long, Qacheeable> getQachee(@NonNull Class clazz) {
+		return qachee.get(clazz);
 	}
 
 	/**
 	 * Returns the Qacheeable object stored in the cache. If the Qacheeable Object is not in the cache,
 	 * it will be saved before return it.
-	 * @param qacheeable The Qacheeable object that you get from somewhere.
-     * @param checkLastUpdate true if check for last updated time, false otherwise.
+	 *
+	 * @param qacheeable      The Qacheeable object that you get from somewhere.
+	 * @param checkLastUpdate true if check for last updated time, false otherwise.
 	 * @return The Qacheeable object stored in the cache.
 	 */
-	public Qacheeable get(Qacheeable qacheeable, boolean checkLastUpdate) {
+	@Nullable
+	public Qacheeable get(@NonNull Qacheeable qacheeable, boolean checkLastUpdate) {
+		LruCache<Long, Qacheeable> cache = qachee.get(qacheeable.getClass());
 
-        Qacheeable qacheed = qachee.get(qacheeable.getKey());
+		Qacheeable qacheed = null;
+		if (cache != null) {
+			qacheed = cache.get(qacheeable.getKey());
 
-		if(qacheed != null) {
-            if (checkLastUpdate && qacheed.lastUpdate() > expirationTime.getValue()) {
-                qacheed = null;
-            } else {
-                add(qacheeable);
-            }
-        }else {
-            add(qacheeable);
-        }
+			if (qacheed != null) {
+				if (checkLastUpdate && qacheed.lastUpdate() > expirationTime) {
+					qacheed = null;
+				} else {
+					add(qacheeable);
+				}
+			} else {
+				add(qacheeable);
+			}
+		}
+
 		return qacheed;
 	}
 
+	/**
+	 * @deprecated This method could not reliably return the intended object if there are multiple
+	 * class type that returns the same Qacheeable#getKey. Use {@link #get(Long, Class, boolean)} instead
+	 */
+	@Deprecated
+	@Nullable
+	public Qacheeable get(Long key, boolean checkLastUpdate) {
 
+		Qacheeable qacheed = search(key);
 
-    /**
-     * Returns the Qacheeable object which has the same key value.
-     * @param key The key value
-     * @return The Qacheeable object stored in the cache
-     */
-    public Qacheeable get(Long key, boolean checkLastUpdate) {
+		if (qacheed != null) {
+			if (checkLastUpdate && qacheed.lastUpdate() > expirationTime) {
+				qacheed = null;
+			} else {
+				add(qacheed);
+			}
+		}
 
-        Qacheeable qacheed = qachee.get(key);
+		return qacheed;
+	}
 
-        if(qacheed != null) {
-            if (checkLastUpdate && ((QacheeableObject)qacheed).lastUpdate() > expirationTime.getValue()) {
-                qacheed = null;
-            } else {
-                add((QacheeableObject)qacheed);
-            }
-        }
+	/**
+	 * Searches all entries matching the key
+	 *
+	 * @param key The key to search for
+	 * @return Qacheeable object, otherwise null
+	 */
+	@Nullable
+	private Qacheeable search(Long key) {
+		Qacheeable qacheed = null;
+		for (LruCache<Long, Qacheeable> entry : qachee.values()) {
+			qacheed = entry.get(key);
+			if (qacheed != null) break;
+		}
 
-        return qacheed;
-    }
+		return qacheed;
+	}
 
 	/**
 	 * Returns the Object which has the same key value and is stored in the cache.
-	 * @param key The key value
+	 *
+	 * @param key   The key value
 	 * @param clazz The Object's class that you are looking for.
 	 * @return The Object that which is stored in the cache.
 	 */
-	public <T> T get(Long key, Class<T> clazz, boolean checkLastUpdate) {
-        T qacheed = (T)qachee.get(key);
+	@Nullable
+	public <T> T get(@NonNull Long key, @NonNull Class<T> clazz, boolean checkLastUpdate) {
+		LruCache<Long, Qacheeable> cache = qachee.get(clazz);
 
-        if(qacheed != null) {
-            if (checkLastUpdate && ((QacheeableObject)qacheed).lastUpdate() > expirationTime.getValue()) {
-                qacheed = null;
-            } else {
-                add((QacheeableObject)qacheed);
-            }
-        }
+		T qacheed = null;
+		if (cache != null) {
+			qacheed = (T) cache.get(key);
+
+			if (qacheed != null) {
+				if (checkLastUpdate && ((QacheeableObject) qacheed).lastUpdate() > expirationTime) {
+					qacheed = null;
+				} else {
+					add((QacheeableObject) qacheed);
+				}
+			}
+		}
 
 		return qacheed;
 	}
 
-
 	/**
 	 * Returns the Qacheeable Object that is stored in the cache. If not, it previously will be saved in the cache.
+	 *
 	 * @param qacheeable The Qacheeable Object that you get from somewhere.
-	 * @param clazz The Object's class that you are looking for.
+	 * @param clazz      The Object's class that you are looking for.
 	 * @return The Qacheeable Object that which is stored in the cache.
 	 */
-	public <T> T get(Qacheeable qacheeable, Class<T> clazz, boolean checkLastUpdate) {
-		T qacheed = (T) qachee.get(qacheeable.getKey());
+	@Nullable
+	public <T> T get(@NonNull Qacheeable qacheeable, @NonNull Class<T> clazz, boolean checkLastUpdate) {
+		LruCache<Long, Qacheeable> cache = qachee.get(clazz);
 
-		if(qacheed == null) {
-			add(qacheeable);
-			qacheed = get(qacheeable.getKey(), clazz, checkLastUpdate);
+		T qacheed = null;
+		if (cache != null) {
+			qacheed = (T) qachee.get(qacheeable.getKey());
+
+			if (qacheed == null) {
+				add(qacheeable);
+				qacheed = get(qacheeable.getKey(), clazz, checkLastUpdate);
+			}
 		}
 		return qacheed;
 	}
 
 	/**
-	 * Sets the LruCache
-	 * @param qachee The new LruCache
-	 */
-	private void setQachee(LruCache<Long, Qacheeable> qachee) {
-		this.qachee = qachee;
-	}
-
-	/**
 	 * Adds a List of Qacheeables into cache.
+	 *
 	 * @param qachee The Qacheeable List
 	 */
-	public void add(List<Qacheeable> qachee) {
-		for(Qacheeable qacheeable : qachee) {
-			this.qachee.put(qacheeable.getKey(), qacheeable);
+	public void add(@NonNull List<Qacheeable> qachee) {
+		for (Qacheeable qacheeable : qachee) {
+			LruCache<Long, Qacheeable> cache = this.qachee.get(qacheeable.getClass());
+			if (cache == null) {
+				cache = new LruCache<>(mCacheSize);
+				this.qachee.put(qacheeable.getClass(), cache);
+			}
+			cache.put(qacheeable.getKey(), qacheeable);
 		}
 	}
 
 	/**
 	 * Adds a Qacheeable Object into cache.
+	 *
 	 * @param qacheeable
 	 * @return The Qacheeable's key
 	 */
-	public long add(Qacheeable qacheeable) {
-		this.qachee.put(qacheeable.getKey(), qacheeable);
+	public long add(@NonNull Qacheeable qacheeable) {
+		LruCache<Long, Qacheeable> cache = this.qachee.get(qacheeable.getClass());
+		if (cache == null) {
+			cache = new LruCache<>(mCacheSize);
+			this.qachee.put(qacheeable.getClass(), cache);
+		}
+		cache.put(qacheeable.getKey(), qacheeable);
 		return qacheeable.getKey();
 	}
 
 	/**
 	 * Adds a List of some class that you need to store. Typically the class will be your Pojo Class.
+	 *
 	 * @param qachee The List to store in the cache.
 	 */
-	public <T> void addList(List<T> qachee) {
-		for(T t : qachee) {
-			if(t instanceof Qacheeable) {
-				this.qachee.put(((Qacheeable) t).getKey(), (Qacheeable) t);
+	public <T> void addList(@NonNull List<T> qachee) {
+		for (T t : qachee) {
+			if (t instanceof Qacheeable) {
+				add((Qacheeable) t);
 			}
 		}
 	}
 
 	/**
 	 * Adds a List of some class that you need to store. Typically the class will be your Pojo Class.
+	 *
 	 * @param qachee The List to store into cache.
 	 * @return List<T> The List that you previously stored in the cache.
 	 */
-	public <T> List<T> addAndReturnList(List<T> qachee) {
-		for(T t : qachee) {
-			if(t instanceof Qacheeable) {
-				this.qachee.put(((Qacheeable) t).getKey(), (Qacheeable) t);
+	@NonNull
+	public <T> List<T> addAndReturnList(@NonNull List<T> qachee) {
+		for (T t : qachee) {
+			if (t instanceof Qacheeable) {
+				add((Qacheeable) t);
 			}
 		}
 		return qachee;
@@ -199,89 +251,102 @@ public class QacheeManager {
 
 	/**
 	 * Removes the Qacheeable Object previously stored in the cache.
+	 *
 	 * @param qacheeable The Qacheeable Object.
 	 */
-	public void remove(Qacheeable qacheeable) {
-		this.qachee.remove(qacheeable.getKey());
+	public void remove(@NonNull Qacheeable qacheeable) {
+		LruCache<Long, Qacheeable> cache = this.qachee.get(qacheeable.getClass());
+		if (cache != null) {
+			cache.remove(qacheeable.getKey());
+		}
 	}
 
-
-
 	/**
-	 * Returns a COPY of all the stored objects which are instances of the given class. It also check or not
-	 * for the last updated time.
-	 * @param clazz The Object's Class instance that you are looking for.
+	 * Returns a COPY of all the stored objects which are instances of the given class. It also
+	 * check or not for the last updated time.
+	 *
+	 * @param clazz           The Object's Class instance that you are looking for.
 	 * @param checkLastUpdate true if check for last updated time, false otherwise.
 	 * @return The List of stored objects or null if one of its items has expired.
 	 */
-	private <T> List<T> toArray(Class<T> clazz, boolean checkLastUpdate) {
-		Qacheeable qacheeable;
-		Collection<Qacheeable> list = this.qachee.snapshot().values();
-		List<T> resultList = new ArrayList<T>();
+	@Nullable
+	private <T> List<T> toArray(@NonNull Class<T> clazz, boolean checkLastUpdate) {
+		LruCache<Long, Qacheeable> cache = this.qachee.get(clazz);
+		if (cache == null) {
+			return null;
+		}
+
+		Collection<Qacheeable> list = cache.snapshot().values();
+		List<T> resultList = new ArrayList<T>(list.size());
 		Iterator<Qacheeable> it = list.iterator();
 
-		while(it.hasNext() && resultList != null) {
+		Qacheeable qacheeable;
+		while (it.hasNext()) {
 			qacheeable = it.next();
 
-			if(checkLastUpdate && (qacheeable.lastUpdate() > expirationTime.getValue()) ) {
+			if (checkLastUpdate && (qacheeable.lastUpdate() > expirationTime)) {
+				resultList.clear();
 				resultList = null;
+				break;
 
-			}else if(clazz.isInstance(qacheeable)) {
-				resultList.add((T)qacheeable);
+			} else if (clazz.isInstance(qacheeable)) {
+				resultList.add((T) qacheeable);
 			}
 		}
 		return resultList;
 	}
 
 	/**
-	 * Removes all the Qacheeable Objects which are instancies of clazz.
+	 * Removes all the Qacheeable Objects which are instances of clazz.
+	 *
 	 * @param clazz The class which instances should be removed.
 	 */
-	public <T> void removeAll(Class<T> clazz) {
-		List<T> list = toArray(clazz, false);
-
-		if(list != null) {
-			for(T t: list) {
-				if(t instanceof Qacheeable) {
-					this.qachee.remove(((Qacheeable)t).getKey());
-				}
-			}
+	public <T> void removeAll(@NonNull Class<T> clazz) {
+		LruCache<Long, Qacheeable> cache = this.qachee.get(clazz);
+		if (cache != null) {
+			cache.evictAll();
 		}
 	}
 
-
 	/**
 	 * Returns a COPY of all the stored objects which are instances of the given class.
+	 *
 	 * @param clazz The Object's Class instance that you are looking for.
 	 * @return The List of stored objects or null if one of its items has expired.
 	 */
-	public <T> List<T> toArray(Class<T> clazz) {
+	@Nullable
+	public <T> List<T> toArray(@NonNull Class<T> clazz) {
 		return toArray(clazz, true);
 	}
 
 	/**
 	 * Returns a COPY of all the stored Qacheeable objects.
+	 *
 	 * @return The List of Qacheeable objects.
 	 */
+	@Nullable
 	public List<Qacheeable> toArray() {
 		return toArray(Qacheeable.class, true);
 	}
 
 	/**
 	 * Returns a COPY of all the stored Qacheeable objects in primitive array.
+	 *
 	 * @return The array of stored objects.
 	 */
+	@Nullable
 	public Qacheeable[] toPrimitiveArray() {
-		return (Qacheeable[])toArray(Qacheeable.class, true).toArray();
+		List<Qacheeable> list = toArray(Qacheeable.class, true);
+		return (list == null) ? null : list.toArray(new Qacheeable[list.size()]);
 	}
 
 	/**
 	 * Clears all the cache.
 	 */
 	public void clearQachee() {
-		this.qachee.evictAll();
+		for (LruCache<Long, Qacheeable> cache : qachee.values()) {
+			cache.evictAll();
+		}
 	}
-
-
 
 }
