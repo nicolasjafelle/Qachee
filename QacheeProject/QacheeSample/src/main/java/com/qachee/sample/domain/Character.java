@@ -13,7 +13,7 @@ public class Character extends QacheeableObject {
 	private String description;
 	private int imageResId;
 
-	public Character(){
+	public Character() {
 		super();
 	}
 
@@ -48,9 +48,9 @@ public class Character extends QacheeableObject {
 	}
 
 	@Override
-	public Long getKey() {
-		Log.i("HASHCHODE", "KEY VALUE FOR " + getName() + "= " + hashCode());
-		return (long)hashCode();
+	public String getKey() {
+		Log.i("HASHCHODE", "KEY VALUE FOR " + getName() + "= " + getClass().getSimpleName() + hashCode());
+		return getClass().getSimpleName() + hashCode();
 	}
 
 }

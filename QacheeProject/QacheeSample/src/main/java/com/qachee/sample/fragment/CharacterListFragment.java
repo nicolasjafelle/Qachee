@@ -54,9 +54,9 @@ public class CharacterListFragment extends Fragment implements AdapterView.OnIte
 	private void loadList() {
 		List<Character> list = QacheeManager.getInstance().toArray(Character.class);
 
-		if(list == null || list.isEmpty()) {
+		if (list == null || list.isEmpty()) {
 			new DemoTask(getActivity()).execute();
-		}else {
+		} else {
 			adapter = new CharacterAdapter(list);
 			listView.setAdapter(adapter);
 		}
@@ -72,7 +72,7 @@ public class CharacterListFragment extends Fragment implements AdapterView.OnIte
 
 
 		// OR...
-//		long selectedItemKey = ((Character) QacheeManager.getInstance().get(selectedCharacter, false)).getKey();
+//		String selectedItemKey = ((Character) QacheeManager.getInstance().get(selectedCharacter, false)).getKey();
 //		replace(getActivity(), CharacterEditFragment.newInstance(selectedItemKey);
 	}
 
@@ -101,7 +101,7 @@ public class CharacterListFragment extends Fragment implements AdapterView.OnIte
 		@Override
 		protected void onPreExecute() throws Exception {
 			super.onPreExecute();
-			dialog = ProgressDialog.show(context, "", context.getString(R.string.loading_data) );
+			dialog = ProgressDialog.show(context, "", context.getString(R.string.loading_data));
 		}
 
 		@Override
@@ -125,10 +125,6 @@ public class CharacterListFragment extends Fragment implements AdapterView.OnIte
 			dialog.dismiss();
 		}
 	}
-
-
-
-
 
 
 }

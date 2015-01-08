@@ -34,7 +34,7 @@ public class CharacterAdapter extends BaseAdapter {
 
 	@Override
 	public long getItemId(int i) {
-		return this.list.get(i).getKey();
+		return i;
 	}
 
 	@Override
@@ -43,9 +43,9 @@ public class CharacterAdapter extends BaseAdapter {
 		CharacterItemView itemView;
 		Character character = QacheeManager.getInstance().get(getItem(position), Character.class, false);
 
-		if(convertView != null) {
-			itemView = (CharacterItemView)convertView;
-		}else {
+		if (convertView != null) {
+			itemView = (CharacterItemView) convertView;
+		} else {
 			itemView = new CharacterItemView(parent.getContext());
 		}
 
