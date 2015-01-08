@@ -15,7 +15,7 @@ dependencies {
 }
 ```
 
-Instructions 1
+Instructions - Android Library Module
 ============
 
 1. Clone the git repo
@@ -23,23 +23,15 @@ Instructions 1
 3. Add "Qachee" module in your settings.gradle
 4. DONE
 
-Instructions 2 
-============
-
-1. Add Nicolas Jafelle's Maven repo to your build.gradle: <a href="https://github.com/nicolasjafelle/maven-repo">Instructions</a>
-2. add this dependency: 'com.qachee:qachee:1.0'
-3. DONE
-
-
 How to Use it
 ================
 
-First you need to extends the QacheeableObject which implements the Qacheeable interface, then you have to implements getKey, you can return the ID attribute or anything that make your instance unique, like hashcode()<br>
+First you need to extends the QacheeableObject which implements the Qacheeable interface, then you have to implements getKey, you can return an String value or anything that make your instance unique, like getClass().getSimpleName() + hashcode()<br>
 ``` java
 @Override
 public Long getKey() {
-	return (long)hashCode();
-	// return (long) fooString.hashCode();
+	Log.i("HASHCHODE", "KEY VALUE FOR " + getName() + "= " + getClass().getSimpleName() + hashCode());
+	return getClass().getSimpleName() + hashCode();
 }
 ```
 You can set the Expiration Time Policy, default is: 
