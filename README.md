@@ -9,9 +9,9 @@ Instructions - Maven Central
 ============
 
 1. Add this library in your build.gradle:
-``` 
+```groovy
 dependencies {
-    compile 'com.github.nicolasjafelle:qachee:1.1'
+    compile 'com.github.nicolasjafelle:qachee:1.2'
 }
 ```
 
