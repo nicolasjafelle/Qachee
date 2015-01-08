@@ -3,10 +3,10 @@ apply plugin: 'maven'
 
 android {
     compileSdkVersion 21
-    buildToolsVersion "21.1.1"
+    buildToolsVersion "21.1.2"
 
     defaultConfig {
-        minSdkVersion 7
+        minSdkVersion 4
         targetSdkVersion 21
         versionCode 2
         versionName "1.1"
@@ -14,13 +14,12 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:21.0.+'
+    compile 'com.android.support:support-v4:21.0.3'
 }
 
 //group 'com.qachee'
 //archivesBaseName = 'qachee'
 //version '1.0'
-
 
 //ext.home = "file://" + System.getProperty("user.home") + "/.m2/repository"
 //

@@ -2,7 +2,7 @@ package com.qachee;
 
 
 /**
- * This abstract class is the responsable to check and update the last updated time. Typically POJOs
+ * This abstract class is the responsible to check and update the last updated time. Typically POJOs
  * should be subclasses of QacheeableObject.
  */
 public abstract class QacheeableObject implements Qacheeable {
@@ -19,7 +19,6 @@ public abstract class QacheeableObject implements Qacheeable {
 		update();
 		return result;
 	}
-
 
 	@Override
 	public void update() {
