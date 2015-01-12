@@ -29,7 +29,7 @@ How to Use it
 First you need to extends the QacheeableObject which implements the Qacheeable interface, then you have to implements getKey, you can return a String value or anything that make your instance unique, like getClass().getSimpleName() + hashcode()<br>
 ``` java
 @Override
-public Long getKey() {
+public String getKey() {
 	Log.i("HASHCHODE", "KEY VALUE FOR " + getName() + "= " + getClass().getSimpleName() + hashCode());
 	return getClass().getSimpleName() + hashCode();
 }
